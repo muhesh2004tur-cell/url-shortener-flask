@@ -3,10 +3,12 @@ from flask import Flask,request,redirect
 from urllib.parse import urlparse
 import string
 import secrets
+import os
 import sqlite3
 from datetime import datetime, timezone
 app=Flask(__name__)
-DATABASE = "urls.db"
+DATABASE = os.getenv("DATABASE_PATH", "urls.db")
+BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:5000")
 @app.get("/")
 def home():
     return{
@@ -142,7 +144,7 @@ def url_shorten():
     return  {
     "message": "URL shortened successfully",
     "short_code": short_code,
-    "short_url": f"http://127.0.0.1:5000/{short_code}"
+    "short_url": f"{BASE_URL}/{short_code}"
 },201
 @app.get("/<short_code>")
 
